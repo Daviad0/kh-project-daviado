@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <title>Secureaty</title>
+    <link rel="stylesheet" href="style.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/script.js" defer></script>    
+</head>
+<body style="font-family: Lato;background-color:#f5faff">
+    <div class="nav">
+        <ul class="nav-bar">
+            <li class="nav-item"><a class="nav-item-link" href="/">Home</a></li>
+            <li class="nav-item notres"><a class="nav-item-link" href="/find">Find a Meal</a></li>
+            <li class="nav-item notres"><a class="nav-item-link" href="/volunteer">Volunteer</a></li>
+            <li class="nav-item notres"><a class="nav-item-link" href="#">Sponsor</a></li>
+            <% if(loggedIn) { %>
+                <li style="float: right;" class="nav-item"><a class="nav-item-link" href="/account" style="background-color: #258fdb;color:white;border-radius:0px 0px 0px 6px">Account</a></li>
+                <% }else { %>
+                    <li style="float: right;" class="nav-item"><a class="account-button" href="/login" style="background-color: #258fdb;color:white;border-radius:0px 0px 0px 6px">Login</a></li>
+                    <% } %>
+        </ul>
+    </div>
+    <br/>
+    <main><%- body %></main>
+    
+    
+</body>
+</html>

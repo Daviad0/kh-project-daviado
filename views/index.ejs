@@ -1,0 +1,34 @@
+<div style="display: table;height: 100vh;width:100%;background-color:#2F3061">
+  <div style="display: table-cell; vertical-align: middle;">
+    <h1 style="text-align: center;color:#f5faff;font-weight: 600;font-size:40px">Welcome!</h1>
+    <h3 style="text-align: center;color:#f5faff;font-weight: 600;font-size:30px">Please find what you need...</h3>
+    <div style="text-align: center;">
+      <input type="button" class="button-white" onclick="location.replace('/volunteer')" value="Volunteer"/>
+      <input type="button" class="button-white" onclick="location.replace('/find')" value="Find a Meal"/>
+      <input type="button" class="button-white" value="Sponser"/>
+      <input type="button" class="button-white" value="About"/>
+    </div>
+    
+  </div>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<button id="testButton">UWU</button>
+<script>
+  $("#testButton").click(function(e){
+    $.ajax({
+      type: "POST",
+      url: "/api/login",
+      data: {username: 'Daviado', password: 'ElfOnTheShelf'},
+      dataType: 'json',
+      success: function(result){
+          console.log("Login Success!");
+      }
+    });
+  })
+  
+</script>

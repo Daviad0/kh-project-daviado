@@ -1,0 +1,29 @@
+
+<div style="display: table;height: 30vh;width:100%;background-color:#2F3061">
+    <div style="display: table-cell; vertical-align: middle;">
+        <h1 style="text-align: center;color:#f5faff;font-weight:bold">My Account</h1>
+    </div>
+</div>
+
+<div style="text-align: center;margin-top:20px">
+    <span style="font-size:40px;font-weight: 600;margin-bottom:10px"><%= user.username %> <div title="You are a superuser!" style="display: inline-block;background-color:#258fdb;height:20px;width:20px;border-radius:4px"></div> <div title="You are restricted!" style="display: inline-block;background-color:red;height:20px;width:20px;border-radius:4px"></div></span>
+    <br/>
+    <span style="font-size:20px;margin-bottom:10px">Joined <%= user.joined.getDate() + '/' + (user.joined.getMonth()+1) + '/' + user.joined.getFullYear() + ' at ' + user.joined.getHours() + ':' + (user.joined.getMinutes() < 10 ? ('0' + user.joined.getMinutes()) : user.joined.getMinutes())  %></span>
+</div>
+
+<button id="logout">Log Out</button>
+
+<script>
+    $("#logout").click(function(e){
+      $.ajax({
+        type: "POST",
+        url: "/api/logout",
+        data: {},
+        dataType: 'json',
+        success: function(result){
+            location.replace("/")
+        }
+      });
+    })
+    
+  </script>

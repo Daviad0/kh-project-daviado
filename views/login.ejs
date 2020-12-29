@@ -1,0 +1,35 @@
+<div style="display: table;height: 30vh;width:100%;background-color:#2F3061">
+    <div style="display: table-cell; vertical-align: middle;">
+        <h1 style="text-align: center;color:#f5faff;font-weight:bold">Login or <a style="color: #f5faff;" href="/register">Register</a></h1>
+    </div>
+</div>
+<br/>
+<div style="text-align: center;">
+    
+    
+    <input type="text" placeholder="Username" id="username" class="form-input" style="display: inline-block;margin:5px"/>
+    <input type="password" placeholder="Password" id="password" class="form-input" style="display: inline-block;margin:5px"/>
+    <input type="button" id="login" value="Log In" class="button-dark" style="display: inline-block;margin:5px;font-size:15px"/>
+    <br/>
+    <span id="errorMessage" style="color:red;opacity:0%;margin:10px">We're sorry, we could not authorize an account with that username and password!</span>
+</div>
+<script>
+    $("#login").click(function(e){
+        $('#errorMessage').animate({opacity: 0}, 300);
+        $.ajax({
+          type: "POST",
+          url: "/api/login",
+          data: {username: $("#username").val(), password: $("#password").val()},
+          dataType: 'json',
+          success: function(result){
+              if(result.success){
+                $('#errorMessage').animate({opacity: 0}, 300);
+                location.replace('/')
+              }else{
+                $('#errorMessage').animate({opacity: 1}, 300);
+              }
+              
+          }
+        });
+      })
+</script>
