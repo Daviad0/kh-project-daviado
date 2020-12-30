@@ -306,7 +306,7 @@ app.get("/volunteer", (request, response) => {
     response.render('login', { loggedIn: response.locals.isAuth });
   }
    
-  
+   
 });
 app.get("/startsponsoring", (request, response) => {
   mongoHandler.retrieveAll(Sponsor, {}).then(function(result){

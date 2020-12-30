@@ -5,11 +5,8 @@
     </div>
 </div>
 <br/>
-<div style="text-align: center;">
+<div style="text-align: center;margin:15px">
     <h1>KuriusHacks Christmas Edition</h1>
-  <h3>
-    Made by Daviado#3449 (David Reeves)
-  </h3>
 <span style="font-size: 15px;color:#2F3061">This website was made exclusively for the KuriusHacks Christmas Edition Hackathon. Any and all resources were produced between 28/12/2020 and 30/12/2020 during the specified time periods.</span>
 <br/>
 <br/>
@@ -32,7 +29,14 @@
     <span style="font-size:25px;font: weight 600;margin-bottom:5px">EchoAR Challenge &#10008;:</span><br/>
     <span style="font-size:15px;font: weight 600;">Secureaty does not meet the requirements for this challenge</span>
 </div>
+  <br/>
 <br/>
+<h2>What Inspired Me and How It's Built</h2>
+  <span style="font-size: 15px;color:#2F3061">I'm really into improving and optimizing via mobile devices and tablets as it's really impressive that you can fit such a big function into a small device. When I heard about this challenge, my brain started focusing on a simple way to allow people who may not be technologically advanced to be able to connect to an advanced system. That's why I went for a simplistic design (kindof). It's not entirely difficult to navigate around and it isn't littered with icons and all that junk that may seem confusing.</span>
+  <br/>
+<br/>
+  <span style="font-size: 15px;color:#2F3061">I used Node.JS and Express.JS to build this project, along with API help from MongoDB and MapQuest. All of the backend is housed in server.js, passwords.js, and mongo.js (the names describe the function of the names). I do not like changing my way on things, so I did make the mistake of housing EVERY request in the server.js file instead of using routers (and an added 6 hours of workarounds to a authentication library that way too yay)</span>
+  <br/>
 <br/>
 <h2>Premise</h2>
   <span style="font-size: 15px;color:#2F3061">The main idea of the application may not be clear at first, so please let me describe it in detail: In many major cities, there are several public places that can be utilized by people who may not be able to get technology devices (the target food insecure). There, a kiosk would be placed with an internet connection that can connect to the Secureaty website. The login page is purposefully designed NOT to have an email, as absolutely anyone is able to create an account and request specific dishes. In the find a meal page, there is a list of options that a person could select which cooresponds to certain food item descriptions. If a certain amount of items match (and the dietary restrictions portion is the same as the food item), the user is able to see the food items in a list, along with the sponsor. On that page, they are now allowed to select the food items they want and submit a request at the bottom. The browser detects the current user's location (with permission of course) and calculates an optimal path to all of the sponsor locations using MapQuest to show on the page.</span>
@@ -83,6 +87,16 @@
 <br/>
 <span style="font-size: 15px;color:#2F3061">Lastly in security, you may find several keys left out of the .ENV file. This is due to mostly time, but I have tied down all loose billing ends so I am using all free resources!</span>
 <br/>
+<br/>
+  <h2>Challenges I Faced and What I Learned</h2>
+<span style="font-size: 15px;color:#2F3061">One huge challenge I faced while working on this website was actually linking it all together. I mistakenly put the website together in a weird order, and should've brainstormed out the format of it more before actually starting to develop the framework. Luckily, I recovered most of my idea to be implemented in the full 48 hour time period, but now I know in the future to framework more efficiently.</span>
+<br/>
+<br/>
+<span style="font-size: 15px;color:#2F3061">Another big challenge I faced was connecting together models in mongoDB (which shouldn't even happen in the first place, but hey, frame working). I solved this by connecting each model to an id in another one, but this could be done much more efficiently. I know that next time I may just want to stick to SQL object connecting as I definitely recognize the difference between my last hackathon project with SQL vs this one.</span>
+<br/>
+<br/>
+  <span style="font-size:15px;color:#2F3061">Overall, I learned more how to manage my time and what's good about teamwork. This time I tried doing the hackathon alone, and I found out some pros and cons do doing that. Learning so may help me improve time management and getting more sleep on future hacks.</span>
+  <br/>
 <br/>
 <h1 style="color:#2F3061">Thanks!</h1>
 <br/>
