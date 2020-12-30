@@ -8,7 +8,7 @@ const mongo = require('mongoose');
 const mongoHandler = require("./mongo")
 const passwordHandler = require("./passwords");
 
-tokens = {};
+var tokens = {};
 
 const User = require("./mongo_models/user");
 const Dish = require("./mongo_models/dish");
@@ -93,24 +93,51 @@ app.get("/register", (request, response) => {
 app.get("/sponsor", (request, response) => {
   mongoHandler.retrieveAllById(Sponsor, request.query.sponsorId).then(function(result){
     mongoHandler.retrieveAll(Dish, {offeredById: result._id.toString()}).then(function(dishes){
-      if(result != undefined){
-        var wanted = [];
-        if(response.locals.isAuth){
-          tokens[response.locals.token].interestedIn.forEach(e => {
-            wanted.push(e.idOfObject);
+      var dishIds = [];
+      dishes.forEach(d => {
+        dishIds.push(d._id.toString());
+      });
+      mongoHandler.retrieveAll(Volunteer, {}).then(function(possibleVolunteers){
+        var volunteersForSponsor = 0;
+        possibleVolunteers.forEach(volunteer => {
+          volunteer.for.forEach(sponsor => {
+            if(sponsor.sponsorId == request.query.sponsorId){
+              volunteersForSponsor += 1;
+            }
           });
-          if(response.locals.user._id.toString() == result.contactId.toString() || checkCookie(response.locals.token,true)){
-            response.render('sponsor', { loggedIn: response.locals.isAuth, administrator: true, sponsor: result, dishes: dishes, wanted: wanted });
+        });
+        if(result != undefined){
+          var wanted = [];
+          if(response.locals.isAuth){
+            tokens[response.locals.token].interestedIn.forEach(e => {
+              wanted.push(e.idOfObject);
+            });
+            if(response.locals.user._id.toString() == result.contactId.toString() || checkCookie(response.locals.token,true)){
+              mongoHandler.retrieveAll(Request, {}).then(function(requests){
+                var validRequests = 0;
+                for(var i = 0; i < requests.length; i++){
+                  for(var j = 0; j < requests[i].for.length; j++){
+                    if(dishIds.includes(requests[i].for[j].dishId)){
+                      validRequests += 1;
+                      break;
+                    }
+                  }
+                }
+                response.render('sponsor', { loggedIn: response.locals.isAuth, administrator: true, sponsor: result, dishes: dishes, wanted: wanted, volunteers: volunteersForSponsor, requests: validRequests });
+              });
+              
+            }else{
+              response.render('sponsor', { loggedIn: response.locals.isAuth, administrator: false, sponsor: result, dishes: dishes, wanted: wanted, volunteers: volunteersForSponsor });
+            }
+
           }else{
-            response.render('sponsor', { loggedIn: response.locals.isAuth, administrator: false, sponsor: result, dishes: dishes, wanted: wanted });
+            response.render('sponsor', { loggedIn: response.locals.isAuth, administrator: false, sponsor: result, dishes: dishes, wanted: wanted, volunteers: volunteersForSponsor });
           }
-          
         }else{
-          response.render('sponsor', { loggedIn: response.locals.isAuth, administrator: false, sponsor: result, dishes: dishes, wanted: wanted });
+          response.render("index", { loggedIn: response.locals.isAuth })
         }
-      }else{
-        response.render("index", { loggedIn: response.locals.isAuth })
-      }
+      });
+      
     });
     
   });
@@ -149,8 +176,8 @@ app.get("/find", (request, response) => {
     var details = {sweetness: request.query.sweetness, strength: request.query.strength, fruity: request.query.fruity, smooth: request.query.smooth, liquid: request.query.liquid, vegetarian: request.query.vegetarian, lactose: request.query.lactose, gluten: request.query.gluten};
     mongoHandler.retrieveAll(Dish, {}).then(function(result){
       var scores = {}
-      for(i = 0;i < result.length;i++){
-        e = result[i]
+      for(var i = 0;i < result.length;i++){
+        var e = result[i]
         var localscore = 0;
         // Sweetness
         if(Math.abs(e.sweetness - details.sweetness) > 3){
@@ -278,7 +305,7 @@ app.get("/volunteer", (request, response) => {
   }else{
     response.render('login', { loggedIn: response.locals.isAuth });
   }
-  
+   
   
 });
 app.get("/startsponsoring", (request, response) => {
@@ -359,7 +386,7 @@ app.post("/api/volunteer", (request, response) => {
             result.for = []
           }
           result.for.push({sponsorId: request.body.sponsorId});
-          toBeWanted = true;
+          var toBeWanted = true;
         }
         mongoHandler.updateItem(Volunteer, result, function(newVolunteer){
           response.send({success: true});

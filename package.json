@@ -1,6 +1,6 @@
 {
   "name": "secureaty",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Node.JS App to allow people in need to have a platform to communicate with food donors",
   "main": "server.js",
   "scripts": {
