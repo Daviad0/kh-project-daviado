@@ -9,7 +9,7 @@
     <input type="text" placeholder="Full Name" id="fullname" class="form-input" style="display: inline-block;margin:5px"/>
     <input type="text" placeholder="Username" id="username" class="form-input" style="display: inline-block;margin:5px"/>
     <input type="password" placeholder="Password" id="password" class="form-input" style="display: inline-block;margin:5px"/>
-    <input type="button" id="login" value="Register" class="button-dark" style="display: inline-block;margin:5px;font-size:15px"/>
+    <a style="cursor:pointer;" id="login" value="Register" class="button-dark" style="display: inline-block;margin:5px;font-size:15px">Register</a>
     <br/>
     <span id="errorMessage" style="color:red;opacity:0%;margin:10px">We're sorry, we had trouble registering your account!</span>
 </div>
@@ -22,6 +22,7 @@
           data: {username: $("#username").val(), password: $("#password").val(), fullName: $("#fullname").val()},
           dataType: 'json',
           success: function(result){
+              console.log(result)
               if(result.success){
                 $('#errorMessage').animate({opacity: 0}, 300);
                 location.replace('/')

@@ -1,10 +1,7 @@
 {
-  "//1": "describes your app and its dependencies",
-  "//2": "https://docs.npmjs.com/files/package.json",
-  "//3": "updating this file will download and update your packages",
-  "name": "hello-express",
-  "version": "0.0.1",
-  "description": "A simple Node app built on Express, instantly up and running.",
+  "name": "secureaty",
+  "version": "1.0.0",
+  "description": "A Node.JS App to allow people in need to have a platform to communicate with food donors",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -23,9 +20,6 @@
   },
   "engines": {
     "node": "12.x"
-  },
-  "repository": {
-    "url": "https://glitch.com/edit/#!/hello-express"
   },
   "license": "MIT",
   "keywords": [

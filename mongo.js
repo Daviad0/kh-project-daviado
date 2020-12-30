@@ -26,8 +26,26 @@ exports.addItem = function(model){
     }
 };
 
+exports.addItemWait = async function(model){
+    return model.save(function(err, newModel){
+        return newModel;
+    });
+};
+
+exports.findMultipleIds = async function(type, ids){
+    return type.find().where('_id').in(ids).exec((err, records) => {
+        return records;
+    });
+}
+
 exports.retrieveAll = async function(type,parameters){
-    return type.find(function(err,allOfType){
+    return type.find(parameters, function(err,allOfType){
+        return allOfType;
+    });
+}
+
+exports.retrieveAllById = async function(type,id){
+    return type.findById(id,function(err,allOfType){
         return allOfType;
     });
 }
@@ -59,5 +77,11 @@ exports.handleRegistration = function(userModel, callback){
     userModel.save(function(err, user){
         var psuedoToken = crypto.randomBytes(64).toString('hex');
         callback({user:user, success: true, token: psuedoToken});
+    });
+}
+
+exports.updateItem = function(type, model, callback){
+    type.findByIdAndUpdate(model._id, model, {new: true}, function(err, newItem){
+       callback(newItem); 
     });
 }

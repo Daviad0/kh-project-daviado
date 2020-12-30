@@ -1,0 +1,75 @@
+<div style="display: table;height: 30vh;width:100%;background-color:#2F3061">
+    <div style="display: table-cell; vertical-align: middle;">
+        <h1 style="text-align: center;color:#f5faff;font-weight:bold">Search Results</h1>
+    </div>
+</div>
+<br/>
+<div style="text-align: center;">
+    <% dishes.forEach(dish => { %>
+ 
+        <table style="border: 2px solid #258fdb;border-radius:6px;padding:10px;margin-bottom:10px;display:inline-block;width:80vw">
+            <tbody style="width:100%">
+                <tr>
+                    <td style="width:15%;text-align:left">
+                        <a name="<%= dish._id.toString() %>" type="button" class="button-dark select" value="Select" style="font-size:12px">Select</a>
+                    </td>
+                    <td style="width:30%;text-align:left">
+                        <%= dish.name %>
+                    </td>
+                    <td style="width:35%;text-align:left">
+                        <a href="/sponsor?sponsorId=<%= dish.offeredById %>">From <%= sponsors[dish.offeredById.toString()] %> </a>
+                    </td>
+                    <td style="width:20%;text-align:left">
+                        Match Score: <%= dish.score %>
+                    </td>
+                    <td style="width:35%;text-align:right">
+                        <div title="Available!" style="background-color: #258fdb;height:20px;width:20px;border-radius:4px">
+        
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <% }); %>
+</div>
+<div id="map" style="width: 100%; height: 530px;display:none"></div>
+<script>
+    window.onload = function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(location){
+                    var position = {lat: location.coords.latitude, lng: location.coords.longitude};
+                    L.mapquest.key = 'jQkvO2WhkOV7nAxKdviGl73eJA3oWU2N';
+    
+                    var map = L.mapquest.map('map', {
+                        center: [39.7392, -104.9903],
+                        layers: L.mapquest.tileLayer('map'),
+                        zoom: 10
+                    });
+            
+                    
+
+                    L.mapquest.geocoding().reverse(position, generatePopupContent);
+            
+                    function generatePopupContent(error, response) {
+                        var location = response.results[0].locations[0];
+                        var street = location.street;
+                        var city = location.adminArea5;
+                        var state = location.adminArea3;
+                        L.mapquest.directions().route({
+                            start: street + ', ' + city + ', ' + state,
+                            end: '10400 Trailwood Rd, Plymouth, MI',
+                            options: {
+                            routeType: 'pedestrian'
+                            }
+                        });
+                    }
+                });
+                
+              } else { 
+                console.log("Geolocation is not supported by this browser.");
+              }
+            
+
+          }
+</script>

@@ -3,4 +3,138 @@
         <h1 style="text-align: center;color:#f5faff;font-weight:bold">Volunteer Nearby</h1>
     </div>
 </div>
-<h1>Hello!</h1>
+<br/>
+<% if(isVolunteer){ %><div style="text-align: center;">
+    <% sponsors.forEach(sponsor => { %>
+        <% if(volunteerInstance.includes(sponsor._id.toString())){ %>
+        <table style="border: 2px solid #258fdb;border-radius:6px;padding:10px;margin-bottom:10px;display:inline-block;width:80vw">
+            <tbody style="width:100%">
+                <tr>
+                    <td style="width:25%;text-align:left">
+                        <a id="<%= sponsor._id.toString() %>" name="<%= sponsor._id.toString() %>" type="button" class="button-dark select delSponsor" value="Volunteering" style="font-size:12px">Volunteering</a>
+                    </td>
+                    <td style="width:30%;text-align:left">
+                        <a href="/sponsor?sponsorId=<%= sponsor._id.toString() %>">From <%= sponsor.name %> </a>
+                    </td>
+                    <td style="width:15%;text-align:left">
+                        <%= sponsor.ratings.length > 0 ? sponsor.ratings.map(item => item.numRating).reduce((prev, next) => prev + next) + ' Stars' : '0 Stars' %>
+                    </td>
+                    <td style="width:35%;text-align:left">
+                        @ <%= sponsor.address %>
+                    </td>
+                    <td style="width:35%;text-align:right">
+                        <div title="You are currently signed up to volunteer!" style="background-color: #258fdb;height:20px;width:20px;border-radius:4px">
+        
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <% } %>
+    <% }); %>
+    <br/>
+    <a class="button-dark" id="myBtn">Volunteer More</a>
+</div>
+
+
+<div id="newVolunteer" class="modal" style="border-radius: 6px;">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close" style="color:#258fdb;">&times;</span>
+      <h3 style="text-align: center;">Choose a Sponsor</h3>
+      <% sponsors.forEach(sponsor => { %>
+        <% if(!volunteerInstance.includes(sponsor._id.toString())){ %>
+            <div style="margin:5px">
+                <div style="background-color: #258fdb;height:20px;width:20px;border-radius:4px;display:inline-block">
+                
+                </div><a id="<%= sponsor._id.toString() %>" style="font-size: 20px;margin-left:10px;cursor:pointer" class="addSponsor">   <%= sponsor.name %></a>
+              </div>
+        <% } %>
+    <% }); %>
+      
+    </div>
+  
+  </div>
+
+<script>
+// Get the modal
+var modal = document.getElementById("newVolunteer");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+$(".addSponsor").click(function(e){
+    $.ajax({
+        type: "POST",
+        url: "/api/volunteer",
+        data: { add: 1, sponsorId: $(this).attr("id") },
+        dataType: 'json',
+        success: function(result){
+            if(result.success){
+              
+              location.reload()
+            }
+            
+        }
+      });
+});
+$(".delSponsor").click(function(e){
+    $.ajax({
+        type: "POST",
+        url: "/api/volunteer",
+        data: { add: 0, sponsorId: $(this).attr("id") },
+        dataType: 'json',
+        success: function(result){
+            if(result.success){
+              
+              location.reload()
+            }
+            
+        }
+      });
+});
+</script> <% }else{ %>
+    <div style="text-align: center;">
+        <a type="button" style="cursor:pointer;" id="volunteer" value="Log In" class="button-dark" style="display: inline-block;margin:5px">Start Volunteering</a>
+    </div>
+    <script>
+        $("#volunteer").click(function(e){
+            $.ajax({
+                type: "POST",
+                url: "/api/volunteer/create",
+                data: {},
+                dataType: 'json',
+                success: function(result){
+                    if(result.success){
+                      
+                      location.replace('/')
+                    }
+                    
+                }
+              });
+        });
+        
+    </script>
+    <% } %>

@@ -9,8 +9,9 @@ const dish = new mongo.Schema({
     liquid: Boolean,
     smooth: Boolean,
     lactose: Boolean,
+    gluten: Boolean,
     available: Boolean,
-    offeredBy: String
+    offeredById: String
   });
   
   const Dish = mongo.model('Dish', dish);

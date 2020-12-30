@@ -1,29 +1,172 @@
+<script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
 <div style="display: table;height: 30vh;width:100%;background-color:#2F3061">
     <div style="display: table-cell; vertical-align: middle;">
         <h1 style="text-align: center;color:#f5faff;font-weight:bold">Find Your Sponsor</h1>
     </div>
 </div>
-<div style="margin-top: 10px;text-align: center;">
-    <h1 style="text-align: center;">Find Your Sponsor</h1>
+<div style="margin-top: 10px;text-align: center;" id="searchDiv">
+    <h1 style="text-align: center;">Your Preferences</h1>
+    <h4 style="text-align: center;">Or you can see a full catalog <a href="/dishcatalog">here</a></h4>
     <hr/>
-    <h3>Dinner</h3>
     <form>
-        <div style="text-align: center;">
+        <h3>Dietary Restrictions</h3>
+        <div style="text-align: center;margin-bottom:5px">
             <div style="display:inline-block;margin:5px">
-                <input type="radio" id="dnr-vegetarian-n" name="dnr-vegetarian" value="1">
+                <input type="radio" id="dnr-vegetarian-y" name="vegetarian" value="1">
+                <label for="dnr-vegetarian-y">Vegetarian</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-vegetarian-n" name="vegetarian" value="-1">
                 <label for="dnr-vegetarian-n">Not Vegetarian</label>
             </div>
             <div style="display:inline-block;margin:5px">
-                <input type="radio" id="dnr-vegetarian-p" name="dnr-vegetarian" value="0" checked>
+                <input type="radio" id="dnr-vegetarian-p" name="vegetarian" value="0" checked>
                 <label for="dnr-vegetarian-p">No Preference</label>
             </div>
+        </div>
+        <div style="text-align: center;margin-bottom:5px">
             <div style="display:inline-block;margin:5px">
-                <input type="radio" id="dnr-vegetarian-y" name="dnr-vegetarian" value="-1">
-                <label for="dnr-vegetarian-y">Vegetarian</label>
+                <input type="radio" id="dnr-lactose-y" name="lactose" value="1" checked>
+                <label for="dnr-lactose-y">Lactose</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-lactose-n" name="lactose" value="-1">
+                <label for="dnr-lactose-n">No Lactose</label>
             </div>
         </div>
-        <input type="submit" value="submi"/>
+        <div style="text-align: center;margin-bottom:5px">
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-gluten-y" name="gluten" value="1" checked>
+                <label for="dnr-gluten-y">Gluten</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-gluten-n" name="gluten" value="-1">
+                <label for="dnr-gluten-n">Gluten Free</label>
+            </div>
+
+        </div>
+        <h3>Meal Preferences</h3>
+        <div style="text-align: center;margin-bottom:5px">
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-sweetness-1" name="sweetness" value="5">
+                <label for="dnr-sweetness-1">Very Sweet</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-sweetness-2" name="sweetness" value="4">
+                <label for="dnr-sweetness-2">Sweet</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-sweetness-3" name="sweetness" value="3" checked>
+                <label for="dnr-sweetness-3">Kindof Sweet</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-sweetness-4" name="sweetness" value="2">
+                <label for="dnr-sweetness-4">Slightly Sweet</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-sweetness-5" name="sweetness" value="1">
+                <label for="dnr-sweetness-5">Not Sweet at All</label>
+            </div>
+        </div>
+        <div style="text-align: center;margin-bottom:5px">
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-strength-5" name="strength" value="5">
+                <label for="dnr-strength-5">Very Strong Taste</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-strength-4" name="strength" value="4">
+                <label for="dnr-strength-4">Strong Taste</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-strength-3" name="strength" value="3" checked>
+                <label for="dnr-strength-3">Normal Taste</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-strength-2" name="strength" value="2">
+                <label for="dnr-strength-2">Weak Taste</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-strength-1" name="strength" value="1">
+                <label for="dnr-strength-1">Bland</label>
+            </div>
+        </div>
+        <div style="text-align: center;margin-bottom:5px">
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-fruity-y" name="fruity" value="1">
+                <label for="dnr-fruity-y">Fruity</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-fruity-n" name="fruity" value="-1">
+                <label for="dnr-fruity-n">Not Fruity</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-fruity-p" name="fruity" value="0" checked>
+                <label for="dnr-fruity-p">No Preference</label>
+            </div>
+        </div>
+        <div style="text-align: center;margin-bottom:5px">
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-liquid-y" name="liquid" value="1">
+                <label for="dnr-liquid-y">Liquid</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-liquid-n" name="liquid" value="-1">
+                <label for="dnr-liquid-n">Not Liquid</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-liquid-p" name="liquid" value="0" checked>
+                <label for="dnr-liquid-p">No Preference</label>
+            </div>
+        </div>
+        <div style="text-align: center;margin-bottom:5px">
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-smooth-y" name="smooth" value="1">
+                <label for="dnr-smooth-y">Smooth Texture</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-smooth-n" name="smooth" value="-1">
+                <label for="dnr-smooth-n">Rough Texture</label>
+            </div>
+            <div style="display:inline-block;margin:5px">
+                <input type="radio" id="dnr-smooth-p" name="smooth" value="0" checked>
+                <label for="dnr-smooth-p">No Preference</label>
+            </div>
+        </div>
+        <input type="submit" class="button-dark" value="Search" style="display: inline-block;"/>
     </form>
-    
+    <br/>
     
 </div>
+    
+    <br/>
+    <script>
+        
+          $("#search").click(function(e){
+            var details = {}
+            details.sweetness = $("#dnr-sweetness-1").is(":checked") ? 1 : ($("#dnr-sweetness-2").is(":checked") ? 2 : ($("#dnr-sweetness-3").is(":checked") ? 3 : ($("#dnr-sweetness-4").is(":checked") ? 4 : 5)));
+            details.strength = $("#dnr-strength-1").is(":checked") ? 1 : ($("#dnr-strength-2").is(":checked") ? 2 : ($("#dnr-strength-3").is(":checked") ? 3 : ($("#dnr-strength-4").is(":checked") ? 4 : 5)));
+            details.fruity = $("#dnr-fruity-y").is(":checked") ? 1 : ($("#dnr-fruity-n").is(":checked") ? -1 : 0);
+            details.smooth = $("#dnr-smooth-y").is(":checked") ? 1 : ($("#dnr-smooth-n").is(":checked") ? -1 : 0);
+            details.liquid = $("#dnr-liquid-y").is(":checked") ? 1 : ($("#dnr-liquid-n").is(":checked") ? -1 : 0);
+            details.vegetarian = $("#dnr-vegetarian-y").is(":checked") ? 1 : ($("#dnr-vegetarian-n").is(":checked") ? -1 : 0);
+            details.lactose = $("#dnr-lactose-y").is(":checked") ? 1 : -1;
+            details.gluten = $("#dnr-gluten-y").is(":checked") ? 1 : -1;
+            $.ajax({
+                type: "POST",
+                url: "/api/search",
+                data: {sweetness: details.sweetness, strength: details.strength, fruity: details.fruity, smooth: details.smooth, liquid: details.liquid, vegetarian: details.vegetarian, lactose: details.lactose, gluten: details.gluten},
+                dataType: 'json',
+                success: function(result){
+                    if(result.success){
+                      
+                      location.replace('/')
+                    }else{
+                      
+                    }
+                    
+                }
+              });
+          })
+    </script>
+
