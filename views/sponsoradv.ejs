@@ -1,5 +1,129 @@
 <div style="display: table;height: 30vh;width:100%;background-color:#2F3061">
     <div style="display: table-cell; vertical-align: middle;">
-        <h1 style="text-align: center;color:#f5faff;font-weight:bold">Sponsor</h1>
+        <h1 style="text-align: center;color:#f5faff;font-weight:bold"><%= returning ? 'Your Sponsorships' : 'Start Sponsoring Today!' %></h1>
+        <% if(!returning) { %><h3 style="text-align: center;color:#f5faff;font-weight:bold">Learn how YOU can make a difference...</h3><% } %>
     </div>
 </div>
+<br/>
+<% if(returning){ %><div style="text-align:center;">
+    <% owned.forEach(sponsor => { %>
+        
+        <table style="border: 2px solid #258fdb;border-radius:6px;padding:10px;margin-bottom:10px;display:inline-block;width:80vw">
+            <tbody style="width:100%">
+                <tr>
+                    <td style="width:25%;text-align:left">
+                        <a id="<%= sponsor._id.toString() %>" name="<%= sponsor._id.toString() %>" type="button" class="button-dark select delSponsor" value="Volunteering" style="font-size:12px"  href="/sponsor?sponsorId=<%= sponsor._id.toString() %>">Details</a>
+                    </td>
+                    <td style="width:30%;text-align:left">
+                        <a><%= sponsor.name %> </a>
+                    </td>
+                    <td style="width:15%;text-align:left">
+                        <%= sponsor.ratings.length > 0 ? sponsor.ratings.map(item => item.numRating).reduce((prev, next) => prev + next) + ' Stars' : '0 Stars' %>
+                    </td>
+                    <td style="width:35%;text-align:left">
+                        @ <%= sponsor.address %>
+                    </td>
+                    <td style="width:35%;text-align:right">
+                        <div title="You own this sponsor!" style="background-color: #258fdb;height:20px;width:20px;border-radius:4px">
+        
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+    <% }); %>
+    <a style="display:inline-block;" class="button-dark" id="newSponsorPopupTrigger">Add New</a>
+</div><% }else{ %>
+    <div style="text-align: center;">
+    <% sponsors.forEach(sponsor => { %>
+        
+        <table style="border: 2px solid #258fdb;border-radius:6px;padding:10px;margin-bottom:10px;display:inline-block;width:80vw">
+            <tbody style="width:100%">
+                <tr>
+                    <td style="width:25%;text-align:left">
+                        <a id="<%= sponsor._id.toString() %>" name="<%= sponsor._id.toString() %>" type="button" class="button-dark select delSponsor" value="Volunteering" style="font-size:12px"  href="/sponsor?sponsorId=<%= sponsor._id.toString() %>">Check It Out!</a>
+                    </td>
+                    <td style="width:30%;text-align:left">
+                        <a><%= sponsor.name %> </a>
+                    </td>
+                    <td style="width:15%;text-align:left">
+                        <%= sponsor.ratings.length > 0 ? sponsor.ratings.map(item => item.numRating).reduce((prev, next) => prev + next) + ' Stars' : '0 Stars' %>
+                    </td>
+                    <td style="width:35%;text-align:left">
+                        @ <%= sponsor.address %>
+                    </td>
+                    <td style="width:35%;text-align:right">
+                        <div title="You could own a sponsor just like this one!" style="background-color: #258fdb;height:20px;width:20px;border-radius:4px">
+        
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+    <% }); %>
+    <a style="display:inline-block;" class="button-dark" id="newSponsorPopupTrigger">Join These Sponsors</a>
+    </div>
+    
+    <% } %>
+
+    <div id="newSponsorPopup" class="modal" style="border-radius: 6px;">
+
+        <!-- Modal content -->
+        <div class="modal-content" style="text-align: center;">
+          <span class="close" style="color:#258fdb;">&times;</span>
+          <h3 style="text-align: center;">Create a New Dish</h3>
+          <input style="display: inline-block;width:300px" type="text" placeholder="Company Name" id="sponsorName" class="form-input" style="display: inline-block;margin:5px"/>
+          <br/>
+          <input style="display: inline-block;width:300px" type="text" placeholder="Company Distribution Address" id="sponsorAddress" class="form-input" style="display: inline-block;margin:5px"/>
+          <br/>
+        <a class="button-dark" id="newSponsor">Create</a>
+        </div>
+      
+      </div>
+      <script>
+          // Get the modal
+var modal = document.getElementById("newSponsorPopup");
+
+// Get the button that opens the modal
+var btn = document.getElementById("newSponsorPopupTrigger");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+$("#newSponsor").click(function(e){
+    var button = this;
+        $.ajax({
+            type: "POST",
+            url: "/api/sponsor/create",
+            data: {name: $("#sponsorName").val(), address: $("#sponsorAddress").val()},
+            dataType: 'json',
+            success: function(result){
+                if(!result.success){
+                  location.replace('/login')
+                }else{
+                    location.reload()
+                }
+                
+            }
+          });
+});
+
+      </script>

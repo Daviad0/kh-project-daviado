@@ -14,6 +14,7 @@ const User = require("./mongo_models/user");
 const Dish = require("./mongo_models/dish");
 const Sponsor = require("./mongo_models/sponsor");
 const Volunteer = require("./mongo_models/volunteer");
+const Request = require("./mongo_models/request");
 //var passwordHashStuff = passwordHandler.getHashOfPW("ElfOnTheShelf");
 //console.log(passwordHashStuff);
 //const user = new User({ name: 'David Reeves', username: 'Daviado', joined: new Date(), isSuperuser: true, isRestricted: false, hash: {salt:passwordHashStuff.salt, hashedPW: passwordHashStuff.hashedpassword} });
@@ -59,6 +60,12 @@ app.use(function (req, res, next) {
 app.get("/", (request, response) => {
   response.render('index', { loggedIn: response.locals.isAuth });
 });
+app.get("/about", (request, response) => {
+  response.render('about', { loggedIn: response.locals.isAuth });
+});
+app.get("/guide", (request, response) => {
+  response.render('guide', { loggedIn: response.locals.isAuth });
+});
 app.get("/food", (request, response) => {
   mongoHandler.retrieveAll(Dish,{}).then(function(result){
     response.send(result);
@@ -92,7 +99,7 @@ app.get("/sponsor", (request, response) => {
           tokens[response.locals.token].interestedIn.forEach(e => {
             wanted.push(e.idOfObject);
           });
-          if(response.locals.user._id.toString() == result.contactId.toString()){
+          if(response.locals.user._id.toString() == result.contactId.toString() || checkCookie(response.locals.token,true)){
             response.render('sponsor', { loggedIn: response.locals.isAuth, administrator: true, sponsor: result, dishes: dishes, wanted: wanted });
           }else{
             response.render('sponsor', { loggedIn: response.locals.isAuth, administrator: false, sponsor: result, dishes: dishes, wanted: wanted });
@@ -113,8 +120,23 @@ app.get("/sponsor", (request, response) => {
 app.get("/account", (request, response) => {
   if(response.locals.isAuth){
     // need to check for a user update!
+    mongoHandler.retrieveAll(Request, {contactId: response.locals.user._id.toString()}).then(function(result){
+      mongoHandler.retrieveAll(Sponsor, {contactId: response.locals.user._id.toString()}).then(function(sponsors){
+        mongoHandler.retrieveAll(Volunteer, {contactId: response.locals.user._id.toString()}).then(function(rawVolunteer){
+          mongoHandler.retrieveAll(Dish, {}).then(function(dishes){
+            var isVolunteer = false;
+            if(rawVolunteer.length > 0){
+              isVolunteer = true;
+            }
+            response.render('account', { loggedIn: response.locals.isAuth, user: response.locals.user, requests: result, sponsors: sponsors, isVolunteer: isVolunteer, dishes: dishes });
+          })
+          
+        })
+        
+      })
+      
+    });
     
-    response.render('account', { loggedIn: response.locals.isAuth, user: response.locals.user });
     updateUserAccount(response.locals.user.username, response.locals.token);
   }else{
     //return to login or home page as no login = nogo
@@ -259,6 +281,30 @@ app.get("/volunteer", (request, response) => {
   
   
 });
+app.get("/startsponsoring", (request, response) => {
+  mongoHandler.retrieveAll(Sponsor, {}).then(function(result){
+    if(response.locals.isAuth){
+      var owned = result.filter(res => res.contactId == response.locals.user._id.toString());
+      try{
+        if(owned.length > 0){
+          response.render('sponsoradv', { loggedIn: response.locals.isAuth, returning: true, owned: owned });
+        }else{
+          response.render('sponsoradv', { loggedIn: response.locals.isAuth, returning: false, sponsors: result });
+        }
+        
+      }catch(err){
+        response.render('sponsoradv', { loggedIn: response.locals.isAuth, returning: false, sponsors: result });
+      }
+      
+    }else{
+      response.render('sponsoradv', { loggedIn: response.locals.isAuth, returning: false, sponsors: result });
+    }
+    
+    
+    
+  });
+  
+});
 app.get("/dishcatalog", (request, response) => {
   mongoHandler.retrieveAll(Dish, {}).then(function(result){
     mongoHandler.retrieveAll(Sponsor, {}).then(function(sponsors){
@@ -338,6 +384,32 @@ app.post("/api/sponsor/create", (request,response) => {
   }
 });
 
+app.post("/api/sponsor/edit", (request,response) => {
+  if(response.locals.isAuth){
+    mongoHandler.retrieveAllById(Sponsor, request.body.sponsorId).then(function(result){
+      if(result != null){
+        if(response.locals.user._id == result.contactId || checkCookie(response.locals.token,true)){
+          result.name = request.body.name;
+          result.address = request.body.address;
+          result.inService = request.body.inService == 1 ? true: false;
+          mongoHandler.updateItem(Sponsor, result, function(r){
+            response.send({success: true});
+          });
+        }else{
+          response.send({success: false});
+        }
+        
+      }else{
+        response.send({success: false});
+      }
+      
+    });
+  }
+  else{
+    response.send({success: false});
+  }
+});
+
 app.post("/api/dish/create", (request,response) => {
   if(response.locals.isAuth){
     // need an extra check to make sure that the user actually has authorization to say what the sponsor is donating :)
@@ -345,7 +417,7 @@ app.post("/api/dish/create", (request,response) => {
     mongoHandler.retrieveAllById(Sponsor, request.body.sponsorId).then(function(result){
       if(result != []){
         if(response.locals.user._id == result.contactId || checkCookie(response.locals.token,true)){
-          var newDish = new Dish({name: request.body.name, sweetness: request.body.sweetness, fruity: request.body.fruity, vegetarian: request.body.vegetarian, strength: request.body.strength, liquid: request.body.liquid, smooth: request.body.smooth, lactose: request.body.lactose, gluten: request.body.gluten, available: true, offeredById: request.body.sponsorId});
+          var newDish = new Dish({name: request.body.name, sweetness: request.body.sweetness, fruity: request.body.fruity == 1 ? true : false, vegetarian: request.body.vegetarian == 1 ? true : false, strength: request.body.strength, liquid: request.body.liquid == 1 ? true : false, smooth: request.body.smooth == 1 ? true : false, lactose: request.body.lactose == 1 ? true : false, gluten: request.body.gluten == 1 ? true : false, available: true, offeredById: request.body.sponsorId});
           mongoHandler.addItemWait(newDish).then(function(dishSaved){
             response.send({success: true, dish: dishSaved});
           });
@@ -357,6 +429,21 @@ app.post("/api/dish/create", (request,response) => {
         response.send({success: false});
       }
       
+    })
+    
+    
+  }
+  else{
+    response.send({success: false});
+  }
+});
+
+app.post("/api/request/create", (request,response) => {
+  if(response.locals.isAuth){
+    var newRequest = new Request({at: new Date(), for: [request.body["dishIds[]"]], contactId: response.locals.user._id.toString()})
+    
+    mongoHandler.addItemWait(newRequest).then(function(e){
+      response.send({success: true});
     })
     
     
@@ -482,6 +569,6 @@ app.get("/dreams", (request, response) => {
 });
 
 // listen for requests :)
-const listener = app.listen(8765, () => {
+const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });

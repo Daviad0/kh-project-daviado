@@ -11,36 +11,5 @@
     
   </div>
 </div>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<button id="testButton">Sponsor</button>
-<button id="testButton2">Dish</button>
-<script>
-  $("#testButton").click(function(e){
-    $.ajax({
-      type: "POST",
-      url: "/api/sponsor/create",
-      data: {name: 'KuriusHacks CE', address: '10400 Trailwood Rd, Plymouth, MI'},
-      dataType: 'json',
-      success: function(result){
-          console.log(result);
-      }
-    });
-  })
-  $("#testButton2").click(function(e){
-    $.ajax({
-      type: "POST",
-      url: "/api/dish/create",
-      data: {sponsorId: '5fec09aed6a796044e0e896d', name: 'Eggnog', sweetness: 4, fruity: false, vegetarian: true, strength: 3, liquid: true, smooth: true, lactose: true, gluten: true},
-      dataType: 'json',
-      success: function(result){
-          console.log(result);
-      }
-    });
-  })
-  
-</script>
+
+

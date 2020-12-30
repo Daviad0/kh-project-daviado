@@ -2,7 +2,7 @@ const mongo = require('mongoose');
 
 const request = new mongo.Schema({
     at: Date,
-    for: [{ dishName: String, from: String }],
+    for: [{ dishId: String }],
     contactId: String // will be a Username
   });
   

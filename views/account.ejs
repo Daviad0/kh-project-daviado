@@ -6,12 +6,79 @@
 </div>
 
 <div style="text-align: center;margin-top:20px">
-    <span style="font-size:40px;font-weight: 600;margin-bottom:10px"><%= user.username %> <% if(user.isSuperuser){ %><div title="You are a superuser!" style="display: inline-block;background-color:#258fdb;height:20px;width:20px;border-radius:4px"></div><% } %><% if(user.isRestricted){ %><div title="You are restricted!" style="display: inline-block;background-color:red;height:20px;width:20px;border-radius:4px"></div><% } %> </span>
-    <br/>
-    <span style="font-size:20px;margin-bottom:10px">Joined <%= user.joined.getDate() + '/' + (user.joined.getMonth()+1) + '/' + user.joined.getFullYear() + ' at ' + user.joined.getHours() + ':' + (user.joined.getMinutes() < 10 ? ('0' + user.joined.getMinutes()) : user.joined.getMinutes())  %></span>
+    <h2 style="font-size:40px;font-weight: 600"><%= user.username %> <% if(user.isSuperuser){ %><div title="You are a superuser!" style="display: inline-block;background-color:#258fdb;height:20px;width:20px;border-radius:4px"></div><% } %><% if(user.isRestricted){ %><div title="You are restricted!" style="display: inline-block;background-color:red;height:20px;width:20px;border-radius:4px"></div><% } %> </span>
+    <h3 style="font-size:20px">Joined <%= user.joined.getDate() + '/' + (user.joined.getMonth()+1) + '/' + user.joined.getFullYear() + ' at ' + user.joined.getHours() + ':' + (user.joined.getMinutes() < 10 ? ('0' + user.joined.getMinutes()) : user.joined.getMinutes())  %></span>
+    <h3 style="font-size:20px"><% if(requests.length > 0) { %><span style="padding: 5px;border-radius:4px;background-color:gray;color:white">Requester</span><% } %> <% if(isVolunteer) { %><span style="padding: 5px;border-radius:4px;background-color:gray;color:white">Volunteer</span><% } %> <% if(sponsors.length > 0) { %><span style="padding: 5px;border-radius:4px;background-color:gray;color:white">Sponsor</span><% } %></span>
+</div>
+<br/>
+<div style="text-align:center;">
+    <% if(requests.length > 0){ %><h1>Requests Made</h1>
+        <% requests.forEach(request => { %>
+        <table style="border: 2px solid #258fdb;border-radius:6px;padding:10px;margin-bottom:10px;display:inline-block;width:80vw">
+            <tbody style="width:100%">
+                <tr>
+                    <td style="width:15%;text-align:left">
+                        <a type="button" class="button-dark want" value="" style="font-size:12px">Requested!</a>
+                    </td>
+                    <td style="width:50%;text-align:left">
+                        Request made at <%= request.at.getDate() + '/' + (request.at.getMonth()+1) + '/' + request.at.getFullYear() + ' at ' + request.at.getHours() + ':' + (request.at.getMinutes() < 10 ? ('0' + request.at.getMinutes()) : request.at.getMinutes())  %> by YOU
+                    </td>
+                    <td style="width:40%;text-align:left">
+                        <div class="tooltip">Hover for Details
+                            <span class="tooltiptext"><strong>Request Details</strong><br/>
+                                <%= request.for.length %> dishes
+                            </span>
+                          </div>
+                    </td>
+                    <td style="width:35%;text-align:right">
+                        <div title="Request was successfully made!" style="background-color: #258fdb;height:20px;width:20px;border-radius:4px">
+    
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        
+        <% }); %>
+        
+        <% } %>
+        <% if(sponsors.length > 0){ %><h1>Sponsors Owned</h1>
+            <% sponsors.forEach(sponsor => { %>
+                <table style="border: 2px solid #258fdb;border-radius:6px;padding:10px;margin-bottom:10px;display:inline-block;width:80vw">
+                    <tbody style="width:100%">
+                        <tr>
+                            <td style="width:25%;text-align:left">
+                                <a id="<%= sponsor._id.toString() %>" name="<%= sponsor._id.toString() %>" type="button" class="button-dark select delSponsor" value="Volunteering" style="font-size:12px"  href="/sponsor?sponsorId=<%= sponsor._id.toString() %>">Details</a>
+                            </td>
+                            <td style="width:30%;text-align:left">
+                                <a><%= sponsor.name %> </a>
+                            </td>
+                            <td style="width:15%;text-align:left">
+                                <%= sponsor.ratings.length > 0 ? sponsor.ratings.map(item => item.numRating).reduce((prev, next) => prev + next) + ' Stars' : '0 Stars' %>
+                            </td>
+                            <td style="width:35%;text-align:left">
+                                @ <%= sponsor.address %>
+                            </td>
+                            <td style="width:35%;text-align:right">
+                                <div title="You own this sponsor!" style="background-color: #258fdb;height:20px;width:20px;border-radius:4px">
+                
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            <br/>
+            
+            <% }); %>
+            
+            <% } %>
 </div>
 
-<button id="logout">Log Out</button>
+<div style="text-align: center;">
+    <a class="button-dark" style="cursor: pointer;" id="logout">Log Out</a>
+</div>
+<br/>
 
 <script>
     $("#logout").click(function(e){
