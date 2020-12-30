@@ -6,7 +6,10 @@
 </div>
 <br/>
 <% if(returning){ %><div style="text-align:center;">
-    <% owned.forEach(sponsor => { %>
+  <span style="color: #2F3061;font-size:15px;margin:15px">Hey! Thanks for deciding to sponsor food donations through Secureaty. Users will now be able to request for specific dishes from any sponsor and be able to see the distribution location that they are to go to. Please check and make sure that those details are fully correct below (if it's not, press the blue DETAILS button on the left side of the item)</span>
+  <br/>
+  <br/>
+  <% owned.forEach(sponsor => { %>
         
         <table style="border: 2px solid #258fdb;border-radius:6px;padding:10px;margin-bottom:10px;display:inline-block;width:80vw">
             <tbody style="width:100%">
@@ -36,7 +39,10 @@
     <a style="display:inline-block;" class="button-dark" id="newSponsorPopupTrigger">Add New</a>
 </div><% }else{ %>
     <div style="text-align: center;">
-    <% sponsors.forEach(sponsor => { %>
+      <span style="color: #2F3061;font-size:15px;margin:15px">Sponsoring is a generous action that certain companies take to donate food to those in need. First, a company signs up below with their name and distribution address (the JOIN THESE SPONSORS button). They are then allowed to go to their sponsor profile page and start creating dishes with certain nutritional and details so that people can select their preferences. Once that is done, all you have to do is wait for the requests to come in. Volunteers can also sign up to help deliver / distribute the food items, and they have to go to their volunteer profile to sign up.</span>
+<br/>
+  <br/>    
+<% sponsors.forEach(sponsor => { %>
         
         <table style="border: 2px solid #258fdb;border-radius:6px;padding:10px;margin-bottom:10px;display:inline-block;width:80vw">
             <tbody style="width:100%">
