@@ -7,7 +7,7 @@ let hasher = (password, salt) => {
     return {
         salt: salt,
         hashedpassword: value
-    };
+    }; 
 };
 
 let generateSalt = rounds => {
@@ -39,7 +39,7 @@ exports.getHashOfPW = function(password){
 }
 
 exports.checkHashOfPW = function(password, salt, hash){
-    returnedHash = hasher(password, salt)
-    isSame = (hash == returnedHash.hashedpassword);
+    var returnedHash = hasher(password, salt)
+    var isSame = (hash == returnedHash.hashedpassword);
     return isSame;
 }
